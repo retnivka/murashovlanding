@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Секретный Вечер с Алексеем Мурашовым</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #39ff14;
+    --green-dim: #1a8c00;
+    --dark: #050a00;
+    --darker: #000000;
+    --gray: #1a1a1a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--darker);
+    color: #fff;
+    font-family: 'Roboto Condensed', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ─── SCANLINE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px 40px;
+    position: relative;
+  }
+
+  /* ─── HEADER BADGES ─── */
+  .top-badges {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0 10px;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-secret {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+  }
+
+  .badge-secret svg { width: 28px; height: 28px; }
+
+  .badge-topsecret {
+    border: 2px solid var(--green);
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+    line-height: 1.3;
+    animation: borderPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes borderPulse {
+    0%, 100% { box-shadow: 0 0 4px var(--green); }
+    50% { box-shadow: 0 0 14px var(--green), 0 0 30px rgba(57,255,20,0.3); }
+  }
+
+  /* ─── QUOTE ─── */
+  .quote {
+    text-align: right;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    font-style: italic;
+    padding: 6px 0 4px;
+    border-right: 2px solid var(--green-dim);
+    padding-right: 10px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  /* ─── HERO IMAGE AREA ─── */
+  .hero {
+    position: relative;
+    text-align: center;
+    margin: 0 -16px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 60% 40%, rgba(57,255,20,0.07) 0%, transparent 60%),
+      linear-gradient(180deg, var(--darker) 0%, #020f00 50%, var(--darker) 100%);
+  }
+
+  /* Radar circle decoration */
+  .radar {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    width: 120px;
+    height: 120px;
+    opacity: 0.15;
+  }
+
+  .radar circle {
+    fill: none;
+    stroke: var(--green);
+    stroke-width: 1;
+  }
+
+  .radar line {
+    stroke: var(--green);
+    stroke-width: 1.5;
+    transform-origin: center;
+    animation: radarSpin 4s linear infinite;
+  }
+
+  @keyframes radarSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* ─── MAIN TITLE ─── */
+  .main-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(44px, 13vw, 68px);
+    font-weight: 700;
+    line-height: 0.95;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 2;
+    padding: 20px 16px 0;
+    text-shadow:
+      0 0 20px rgba(57,255,20,0.6),
+      0 0 60px rgba(57,255,20,0.2);
+    color: var(--green);
+    letter-spacing: -0.02em;
+  }
+
+  .main-title span.white {
+    color: #fff;
+    text-shadow: none;
+  }
+
+  /* Code lines */
+  .code-lines {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+    font-size: 9px;
+    color: rgba(57,255,20,0.4);
+    line-height: 1.6;
+    z-index: 2;
+    font-family: monospace;
+  }
+
+  /* ─── PERSON PLACEHOLDER ─── */
+  .person-area {
+    position: relative;
+    height: 280px;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .person-silhouette {
+    width: 220px;
+    height: 260px;
+    background: linear-gradient(180deg, rgba(57,255,20,0.05) 0%, rgba(57,255,20,0.02) 100%);
+    border-top: 1px solid rgba(57,255,20,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(57,255,20,0.3);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .dossier-card {
+    position: absolute;
+    top: 30px;
+    right: 16px;
+    border: 1px solid rgba(57,255,20,0.5);
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: rgba(0,0,0,0.7);
+    z-index: 3;
+  }
+
+  .dossier-card::before {
+    content: 'ЛИЧНОЕ ДЕЛО';
+    display: block;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .dossier-card::after {
+    content: 'МУРАШОВ А.А.';
+    display: block;
+  }
+
+  .dossier-stamp {
+    font-size: 9px;
+    color: rgba(255,50,50,0.7);
+    border: 1px solid rgba(255,50,50,0.5);
+    padding: 2px 5px;
+    margin-top: 5px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── SUBTITLE ─── */
+  .subtitle-block {
+    position: relative;
+    z-index: 2;
+    padding: 16px;
+    border-left: 3px solid var(--green);
+    margin: 8px 16px 16px;
+    background: rgba(57,255,20,0.03);
+  }
+
+  .subtitle-block p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.5;
+  }
+
+  /* ─── DATE & VENUE ─── */
+  .event-info {
+    padding: 18px 0 10px;
+  }
+
+  .event-date {
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--green);
+    text-shadow: 0 0 20px rgba(57,255,20,0.5);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .event-date svg { width: 28px; height: 28px; flex-shrink: 0; }
+
+  .event-venue {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    letter-spacing: 0.05em;
+  }
+
+  .event-venue svg { width: 20px; height: 20px; color: var(--green); margin-top: 2px; flex-shrink: 0; }
+
+  .event-address {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-left: 30px;
+  }
+
+  /* ─── FEATURES GRID ─── */
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin: 18px 0;
+  }
+
+  .feature {
+    background: rgba(57,255,20,0.05);
+    border: 1px solid rgba(57,255,20,0.15);
+    padding: 14px 12px;
+    text-align: center;
+  }
+
+  .feature-icon {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .feature-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+
+  .feature-desc {
+    font-size: 10px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.4;
+  }
+
+  /* ─── FIRE BUTTON ─── */
+  .btn-wrap {
+    position: relative;
+    margin: 24px 0 18px;
+    text-align: center;
+  }
+
+  /* Canvas for fire particles */
+  #fireCanvas {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 420px;
+    height: 140px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .fire-btn {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    background: linear-gradient(135deg, #1a0800 0%, #3a0f00 50%, #1a0800 100%);
+    border: 2px solid #ff6a00;
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 18px 40px;
+    cursor: pointer;
+    text-decoration: none;
+    width: 90%;
+    max-width: 380px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    transition: transform 0.1s, box-shadow 0.2s;
+    box-shadow:
+      0 0 20px rgba(255, 106, 0, 0.6),
+      0 0 50px rgba(255, 106, 0, 0.3),
+      inset 0 1px 0 rgba(255,180,0,0.2);
+    animation: btnGlow 2s ease-in-out infinite;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .fire-btn::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(90deg, #ff6a00, #ffb700, #ff4500, #ff6a00);
+    background-size: 300% 100%;
+    z-index: -1;
+    animation: borderFlow 3s linear infinite;
+    border-radius: 2px;
+  }
+
+  @keyframes borderFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+  }
+
+  @keyframes btnGlow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(255,106,0,0.6), 0 0 50px rgba(255,106,0,0.3), inset 0 1px 0 rgba(255,180,0,0.2);
+    }
+    50% {
+      box-shadow: 0 0 35px rgba(255,106,0,0.9), 0 0 80px rgba(255,106,0,0.5), 0 0 120px rgba(255,50,0,0.2), inset 0 1px 0 rgba(255,180,0,0.2);
+    }
+  }
+
+  .fire-btn:hover {
+    transform: scale(1.02);
+  }
+
+  .fire-btn:active {
+    transform: scale(0.97);
+  }
+
+  /* ─── BOTTOM NOTE ─── */
+  .bottom-notes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(57,255,20,0.15);
+  }
+
+  .bottom-note {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+  }
+
+  .bottom-note strong {
+    color: var(--green);
+    display: block;
+    font-size: 12px;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green-dim), transparent);
+    margin: 16px 0;
+  }
+
+  /* Blinking cursor */
+  .blink {
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOP ROW -->
+  <div class="top-badges">
+    <div class="badge-secret">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="15" r="7" stroke="#39ff14" stroke-width="2"/>
+        <path d="M8 36c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="#39ff14" stroke-width="2"/>
+        <rect x="14" y="6" width="12" height="5" rx="1" fill="#39ff14" opacity="0.3"/>
+        <rect x="16" y="3" width="8" height="3" rx="1" fill="#39ff14" opacity="0.5"/>
+      </svg>
+      <div>
+        <div style="font-size:10px;opacity:0.7">СЕКРЕТНЫЙ</div>
+        <div>ФОРМАТ ВСТРЕЧ</div>
+      </div>
+    </div>
+    <div class="badge-topsecret">
+      TOP SECRET<br>
+      <span style="font-size:9px;font-weight:400">ДОПУСК: ТОЛЬКО<br>ПО ПРИГЛАШЕНИЮ</span>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote">«Истинные разговоры начинаются там,<br>где выключаются микрофоны.»</div>
+
+  <!-- HERO AREA -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <!-- Radar decoration -->
+    <svg class="radar" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="55"/>
+      <circle cx="60" cy="60" r="40"/>
+      <circle cx="60" cy="60" r="25"/>
+      <circle cx="60" cy="60" r="10"/>
+      <line x1="60" y1="5" x2="60" y2="60"/>
+    </svg>
+
+    <!-- Code lines -->
+    <div class="code-lines">
+      X7///21<br>K9///11<br>РНД: B847<br>ОПРС: ACTIVE<br>ШИФР: 7G-K2
+    </div>
+
+    <!-- Main Title -->
+    <div class="main-title">
+      СЕКРЕТ<span class="white">НЫЙ</span><br>
+      <span class="white">ВЕЧЕР С</span><br>
+      <span class="white" style="font-size:0.85em">АЛЕКСЕЕМ</span><br>
+      МУРАШОВЫМ
+    </div>
+
+
+
+    <!-- Person placeholder (replace with real photo) -->
+    <div class="person-area">
+      <img src="photo.jpg" style="height:260px;object-fit:cover;">
+        <!-- Place <img> tag with real photo here -->
+      
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBTITLE -->
+  <div class="subtitle-block">
+    <p>Закрытая встреча.<br>Настоящие разговоры.<br>Без лишних ушей.</p>
+  </div>
+
+
+
+
+
+  <div class="divider"></div>
+
+  <!-- DATE & VENUE -->
+  <div class="event-info">
+    <div class="event-date">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#39ff14" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      26 ИЮНЯ
+    </div>
+    <div class="event-venue">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#39ff14" stroke-width="2">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+        <circle cx="12" cy="9" r="2.5"/>
+      </svg>
+      <div>
+        КОНЦЕРТНЫЙ ЗАЛ<br>ЛАСТОЧКА
+      </div>
+    </div>
+    <div class="event-address">Транспортный пер. 10А</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FEATURES -->
+  <div class="features">
+    ⚠️ Внимание! Зона повышенной музыкальной опасности!<br>
+  <br>
+    Хиты, которые обжигают!<br> 
+  <br>
+    <br>
+
+Вы снова споёте вместе с ним:<br>
+🎵 «Сидя на крыше»<br>
+🎵 «В жарких странах»<br>
+🎵 «Странные дни»<br>
+🎵 «Ничего не бойся, я с тобой!»<br>
+  <br>
+    <br>
+      <br>
+
+
+
+🎫 Пароли и явки — в кассах города.<br>
+📞 Телефон: 8 950 223-54-45<br>
+  <br>
+    <br>
+      <br>
+  </div>
+
+  <!-- FIRE BUTTON -->
+  <div class="btn-wrap">
+    <canvas id="fireCanvas"></canvas>
+    <!--
+      ⬇ ЗАМЕНИ href="#" на нужную ссылку
+    -->
+    <a href="https://69ebc1cda101c97d55343aaa.ticketscloud.org" class="fire-btn" id="fireBtn">
+      🔥 АКТИВИРОВАТЬ ВХОД
+    </a>
+  </div>
+
+  <!-- BOTTOM NOTES -->
+  <div class="bottom-notes">
+    <div class="bottom-note">
+      <strong>Не пропустите</strong>
+      Возможность задать вопрос и получить ответ из первых уст
+    </div>
+    <div class="bottom-note">
+      <strong>Ваш пропуск</strong>
+      Будет отправлен после подтверждения вашей личности
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── FIRE + SPARKS ANIMATION ─── -->
+<script>
+const canvas = document.getElementById('fireCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  const wrap = canvas.parentElement;
+  canvas.width = Math.min(wrap.offsetWidth, 420);
+  canvas.height = 140;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const particles = [];
+
+class Particle {
+  constructor(x, isSpark) {
+    this.x = x;
+    this.y = canvas.height - 10;
+    this.isSpark = isSpark;
+
+    if (isSpark) {
+      this.vx = (Math.random() - 0.5) * 4;
+      this.vy = -(Math.random() * 5 + 3);
+      this.size = Math.random() * 2.5 + 1;
+      this.life = 1;
+      this.decay = Math.random() * 0.03 + 0.02;
+      this.color = `hsl(${Math.random() * 40 + 30}, 100%, ${Math.random() * 30 + 70}%)`;
+    } else {
+      this.vx = (Math.random() - 0.5) * 1.5;
+      this.vy = -(Math.random() * 3 + 1.5);
+      this.size = Math.random() * 22 + 10;
+      this.life = 1;
+      this.decay = Math.random() * 0.015 + 0.01;
+    }
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life -= this.decay;
+    if (!this.isSpark) {
+      this.vx += (Math.random() - 0.5) * 0.3;
+      this.size *= 0.985;
+    } else {
+      this.vy += 0.15; // gravity for sparks
+      this.vx *= 0.99;
+    }
+  }
+
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, this.life);
+
+    if (this.isSpark) {
+      ctx.fillStyle = this.color;
+      ctx.shadowColor = this.color;
+      ctx.shadowBlur = 6;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      // flame gradient
+      const t = 1 - this.life;
+      const r = Math.round(255);
+      const g = Math.round(Math.max(0, 170 - t * 170));
+      const b = 0;
+      const grad = ctx.createRadialGradient(
+        this.x, this.y, 0,
+        this.x, this.y, this.size
+      );
+      grad.addColorStop(0,   `rgba(${r},${g + 60},${b},${this.life * 0.9})`);
+      grad.addColorStop(0.4, `rgba(${r},${g},${b},${this.life * 0.7})`);
+      grad.addColorStop(1,   `rgba(${r},${Math.max(0,g-40)},${b},0)`);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+
+const btn = document.getElementById('fireBtn');
+const btnRect = () => {
+  const r = btn.getBoundingClientRect();
+  const cr = canvas.getBoundingClientRect();
+  return { left: r.left - cr.left, width: r.width };
+};
+
+function spawnParticles() {
+  const { left, width } = btnRect();
+  // Flames along the button bottom edge
+  for (let i = 0; i < 3; i++) {
+    const x = left + Math.random() * width;
+    particles.push(new Particle(x, false));
+  }
+  // Occasional sparks
+  if (Math.random() < 0.35) {
+    const x = left + Math.random() * width;
+    particles.push(new Particle(x, true));
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  spawnParticles();
+  for (let i = particles.length - 1; i >= 0; i--) {
+    particles[i].update();
+    particles[i].draw();
+    if (particles[i].life <= 0) particles.splice(i, 1);
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>
